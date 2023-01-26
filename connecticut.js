@@ -24,39 +24,39 @@
  *  - You can still use your browser whilst it is running (at least on Firefox)
  */
 
-var backButton;
-var noticeLink;
-var exit = false;
+var backButton; // holds the element which returns to the main notices page
+var noticeLink; // holds the element which contains the link to the notice
+var exit = false; // exit flag
 
+// trigger mouse event from https://stackoverflow.com/a/47736861
 function triggerMouseEvent(node, eventType) {
   var clickEvent = document.createEvent('MouseEvents');
   clickEvent.initEvent(eventType, true, true);
   node.dispatchEvent(clickEvent);
 }
+// function which simulates a full click event on a HTML element
 function doClick(node) {
 	triggerMouseEvent(node, "mousedown");
 	triggerMouseEvent(node, "mouseup");
 	triggerMouseEvent(node, "click");
 }
 
-const delay = ms => new Promise(res => setTimeout(res, ms));
+// old delay code, may use later in future updates
+//const delay = ms => new Promise(res => setTimeout(res, ms));
 
-async function getViews(n) {
+// main function which clicks on the buttons if in the corresponding view
+function getViews(n) {
 	noticeLink = document.getElementsByClassName("v-label v-widget eds-u-white-space--normal v-label-eds-u-white-space--normal eds-u-flexitext v-label-eds-u-flexitext eds-u-interactive v-label-eds-u-interactive eds-c-heading v-label-eds-c-heading eds-c-heading--md v-label-eds-c-heading--md eds-s-is-first v-label-eds-s-is-first eds-s-is-last v-label-eds-s-is-last v-label-undef-w")[n];
-	if (typeof noticeLink !== "undefined") {
-		doClick(noticeLink);
-		await delay(1500);
-	}
 	backButton = document.getElementsByClassName("v-button v-widget eds-o-button v-button-eds-o-button eds-c-icon-button v-button-eds-c-icon-button eds-o-button--size-sm v-button-eds-o-button--size-sm eds-o-button--captionless v-button-eds-o-button--captionless eds-u-separator--right v-button-eds-u-separator--right")[1];
-	if (typeof backButton !== "undefined") {
-		doClick(backButton);
-		await delay(1500);
-	}
+	if (typeof noticeLink !== "undefined") doClick(noticeLink);
+	if (typeof backButton !== "undefined") doClick(backButton);
 }
 
+// looping function
 function letsaGo(n) {
-	if(!exit) setTimeout(() => { letsaGo(n) }, 3010);
+	if(!exit) setTimeout(() => { letsaGo(n) }, 100);
 	getViews(n);
 }
 
+// replace the 0 with the notice index
 letsaGo(0);
